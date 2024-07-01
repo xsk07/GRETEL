@@ -16,7 +16,7 @@
             "optimizer": {
                 "class": "torch.optim.AdamW",
                 "parameters": {
-                    "lr":1e-2
+                    "lr":0.01
                 }
             },
             "loss_fn": {
