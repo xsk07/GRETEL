@@ -40,7 +40,6 @@ GRETEL [1, 2] is an open source framework for Evaluating Graph Counterfactual Ex
 See the [GRETEL's wiki](https://github.com/aiim-research/GRETEL/wiki)
 
 ## Welcomed Citations:
-
 Please cite our papers if you use GRETEL in your projects:
 
 Mario Alfonso Prado-Romero and Giovanni Stilo. 2022. GRETEL: Graph Counterfactual Explanation Evaluation Framework. In Proceedings of the 31st ACM International Conference on Information and Knowledge Management (CIKM '22). Association for Computing Machinery, New York, NY, USA. [https://doi.org/10.1145/3511808.3557608](https://doi.org/10.1145/3511808.3557608)
