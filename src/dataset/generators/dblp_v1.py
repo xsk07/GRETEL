@@ -21,8 +21,9 @@ class DBLP(Generator):
         self._nl_file_path = join(base_path, f"{self.dataset_name}_node_labels.txt")
         self._el_file_path = join(base_path, f"{self.dataset_name}_edge_labels.txt")
 
-        #self.dataset.node_features_map = {} # ???
-        #self.dataset.edge_features_map = {} # ???
+        self.dataset.node_features_map = {'feature': 0} #???
+        self.dataset.edge_features_map = {'P2P':0, 'P2W': 1, 'W2W': 2} #???
+
         self.generate_dataset()
             
     def generate_dataset(self):
@@ -46,7 +47,7 @@ class DBLP(Generator):
             edges_gid = graph_ind[edges]
 
             graph_ids = np.unique(graph_ind) #list of graph identifiers
-            for id in graph_ids:
+            for id in graph_ids[:200]:
 
                 #masks for filtering accordingly to the graph identifier
                 node_mask = (graph_ind == id) #mask for nodes
@@ -71,13 +72,26 @@ class DBLP(Generator):
                 # assert not np.isclose(np.linalg.det(adj_matrix), 0), f"singular matrix found!"
 
                 if not np.isclose(np.linalg.det(adj_matrix), 0):
+                #if True:
+
+                    # normalization of the node feature
+                    node_features = node_labels[node_mask]
+
+                    #min-max normalization
+                    min_val = np.min(node_features)
+                    max_val = np.max(node_features)
+                    node_features = (node_features-min_val)/(max_val-min_val)
+
+                    # one-hot encoding of the edge lables
+                    edge_features = np.eye(3)[edge_labels[np.any(edge_mask, axis=1)]]
+
                     self.dataset.instances.append(
                         GraphInstance(
                             id,
                             label=labels[id-1],
-                            data=self.create_adj_matrix(mapped_edges),
-                            node_features=node_labels[node_mask],
-                            edge_features=edge_labels[np.any(edge_mask, axis=1)]
+                            data=adj_matrix,
+                            node_features=node_features,
+                            edge_features=edge_features
                         )
                     )
 
@@ -90,4 +104,5 @@ class DBLP(Generator):
         # so already it contains the edges of the two possible permutations of nodes,
         # and so there is no need to insert a 1 in the transposed positions
         adj_matrix[edges[:,0], edges[:,1]] = 1
+        #adj_matrix[edges[:,1], edges[:,0]] = 1
         return adj_matrix    
