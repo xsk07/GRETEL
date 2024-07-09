@@ -9,15 +9,29 @@ from src.dataset.instances.base import DataInstance
 
 class GraphInstance(DataInstance):
 
-    def __init__(self, id, label, data, node_features=None, edge_features=None, edge_weights=None, graph_features=None, dataset=None):
+    def __init__(self, id, label, data, node_features=None, edge_features=None, edge_weights=None, graph_features=None, dataset=None, directed=False):
         super().__init__(id, label, data, dataset=dataset)
         self.node_features = self.__init_node_features(node_features).astype(np.float32)
         self.edge_features = self.__init_edge_features(edge_features).astype(np.float32)
         self.edge_weights = self.__init_edge_weights(edge_weights).astype(np.float32)
         self.graph_features = graph_features
         self._nx_repr = None
+        self.directed = directed
+
+
+        num_nodes = self.data.shape[0]
+        num_edges = np.count_nonzero(self.data)
+        assert len(self.node_features) == num_nodes
+        assert len(self.edge_features) == num_edges
+        assert len(self.edge_weights) == num_edges
 
     def __deepcopy__(self, memo):
+        num_nodes = self.data.shape[0]
+        num_edges = np.count_nonzero(self.data)
+        assert len(self.node_features) == num_nodes
+        assert len(self.edge_features) == num_edges
+        assert len(self.edge_weights) == num_edges
+
         # Fields that are being shallow copied
         _dataset = self._dataset
 
@@ -29,7 +43,17 @@ class GraphInstance(DataInstance):
         _edge_features = deepcopy(self.edge_features, memo)
         _edge_weights = deepcopy(self.edge_weights, memo)
         _graph_features = deepcopy(self.graph_features, memo)
-        return GraphInstance(_new_id, _new_label, _data, _node_features, _edge_features, _edge_weights, _graph_features)
+        _directed = deepcopy(self.directed, memo)
+
+        return GraphInstance(id=_new_id, 
+                             label=_new_label, 
+                             data=_data, 
+                             node_features=_node_features, 
+                             edge_features=_edge_features, 
+                             edge_weights=_edge_weights, 
+                             graph_features=_graph_features, 
+                             directed=_directed,
+                             dataset=_dataset)
 
     def get_nx(self):
         if not self._nx_repr:
