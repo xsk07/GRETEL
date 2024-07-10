@@ -93,11 +93,10 @@ class DBLP(Generator):
                     min_val = np.min(node_features)
                     max_val = np.max(node_features)
                     node_features = (node_features-min_val)/(max_val-min_val)
-
+                    node_features=node_features[:, np.newaxis]
                     # one-hot encoding of the edge lables
                     edge_features = np.eye(3)[edge_labels[np.any(edge_mask, axis=1)]]
-                    print("node features shape aaaaaa")
-                    print(node_features.shape)
+                    
                     self.dataset.instances.append(
                         GraphInstance(
                             id,
