@@ -120,3 +120,5 @@ class DBLP(Generator):
         
         #adj_matrix[edges[:,1], edges[:,0]] = 1
         return adj_matrix    
+    
+    
