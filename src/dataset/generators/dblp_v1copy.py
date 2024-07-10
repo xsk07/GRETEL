@@ -5,7 +5,7 @@ from src.dataset.generators.base import Generator
 from src.dataset.instances.graph import GraphInstance
 
 
-class DBLP(Generator):
+class DBLP2(Generator):
 
     def init(self):
         #configuration parameters
@@ -62,7 +62,7 @@ class DBLP(Generator):
                 #masks for filtering accordingly to the graph identifier
                 node_mask = (graph_ind == id) #mask for nodes
                 edge_mask = (edges_gid == id) #mask for edges
-                #print("shape " + node_mask.shape)
+                #print(node_mask.shape)
 
                 filtered_edges = edges[np.any(edge_mask, axis=1)] #select edges of the graph with identifier id
                 assert np.all(np.diff(np.unique(filtered_edges))==1)
@@ -76,6 +76,7 @@ class DBLP(Generator):
                 assert np.all(np.diff(np.unique(mapped_edges))==1)
 
                 adj_matrix = self.create_adj_matrix(mapped_edges)
+                print(adj_matrix.shape)
                 # manages singluar matrixes,
                 # we add a small constant to the diagonal so that the determinant is non-zero anymore
                 # if np.isclose(np.linalg.det(adj_matrix), 0):
@@ -96,8 +97,7 @@ class DBLP(Generator):
 
                     # one-hot encoding of the edge lables
                     edge_features = np.eye(3)[edge_labels[np.any(edge_mask, axis=1)]]
-                    print("node features shape aaaaaa")
-                    print(node_features.shape)
+
                     self.dataset.instances.append(
                         GraphInstance(
                             id,
@@ -118,6 +118,5 @@ class DBLP(Generator):
         # so already it contains the edges of the two possible permutations of nodes,
         # and so there is no need to insert a 1 in the transposed positions
         adj_matrix[edges[:,0], edges[:,1]] = 1
-        
         #adj_matrix[edges[:,1], edges[:,0]] = 1
         return adj_matrix    

@@ -32,7 +32,7 @@ class OracleTorch(TorchBase, Oracle):
             
             labels_list += list(labels.squeeze().long().detach().to('cpu').numpy())
             preds += list(pred.squeeze().detach().to('cpu').numpy())
-            
+         
         accuracy = self.accuracy(labels_list, preds)
         self.context.logger.info(f'Test accuracy = {np.mean(accuracy):.4f}')
 

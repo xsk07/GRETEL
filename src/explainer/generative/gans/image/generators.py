@@ -90,6 +90,7 @@ class ResGenerator(nn.Module):
         x = torch.tanh(x) # Tanh values are in [-1, 1] so allow the residual to add or remove edges
         # building the counterfactual example from the union of the residuals and the original instance
         if self.residuals:
+            #print(graph.shape)
             x = torch.add(graph, x)
         # delete self loops
         for i in range(x.shape[0]):

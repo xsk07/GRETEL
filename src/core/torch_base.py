@@ -85,7 +85,7 @@ class TorchBase(Trainable):
                 preds += list(pred.squeeze().detach().to('cpu').numpy())
                
                 self.optimizer.step()
-
+            
             accuracy = self.accuracy(labels_list, preds)
             self.context.logger.info(f'epoch = {epoch} ---> loss = {np.mean(losses):.4f}\t accuracy = {accuracy:.4f}')
             self.lr_scheduler.step()
@@ -136,6 +136,7 @@ class TorchBase(Trainable):
         init_dflts_to_of(local_config, 'loss_fn', 'torch.nn.BCELoss')
         
     def accuracy(self, testy, probs):
+        
         acc = accuracy_score(testy, np.argmax(probs, axis=1))
         return acc
 
