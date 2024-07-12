@@ -22,5 +22,5 @@ if __name__ == "__main__":
     #context.factories['metrics'] = EvaluationMetricFactory(context.conf)
     #context.factories['plotters'] = PlotterFactory(context)
 
-    hp_tuner = HpTuner(context, 300)
+    hp_tuner = HpTuner(context, 100)
     hp_tuner.optimize()
