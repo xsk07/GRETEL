@@ -1,0 +1,39 @@
+{
+    "dataset": {
+        "class": "src.dataset.dataset_base.Dataset",
+        "parameters": {
+            "generator": {
+                "class": "src.dataset.generators.dblp_v1.DBLP",
+                "parameters": {"data_dir": "data/datasets/DBLP_v1/", "dataset_name": "DBLP_v1"}
+            }
+        }
+    },
+    "oracle": {
+        "class": "hpsearch.oracle.torch_hp_tuning.OracleTorch",
+        "parameters": {
+            "epochs": 250,
+            "batch_size": 64,
+            "optimizer": {
+                "class": "torch.optim.AdamW",
+                "parameters": {
+                    "lr":0.01687574557930417
+                }
+            },
+            "loss_fn": {
+                "class": "torch.nn.CrossEntropyLoss",
+                "parameters": {
+                    "reduction":"mean"
+                }
+            },
+            "model": {
+                "class": "src.oracle.nn.gcn.DownstreamGCN",
+                "parameters": {
+                    "num_conv_layers":3,
+                    "num_dense_layers":3,
+                    "conv_booster": 5,
+                    "linear_decay":2.242503723361238
+                }
+            }
+        }
+    }
+}

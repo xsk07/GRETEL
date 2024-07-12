@@ -1,4 +1,5 @@
 from os.path import join
+from random import shuffle
 import numpy as np
 
 from src.dataset.generators.base import Generator
@@ -31,8 +32,8 @@ class DBLP(Generator):
         #labels for the edges in DS_A_sparse.txt 
         self._el_file_path = join(base_path, f"{self.dataset_name}_edge_labels.txt")
 
-        self.dataset.node_features_map = {'feature': 0} #???
-        self.dataset.edge_features_map = {'P2P':0, 'P2W': 1, 'W2W': 2} #???
+        self.dataset.node_features_map = {'node_feature': 0}
+        self.dataset.edge_features_map = {'P2P':0, 'P2W': 1, 'W2W': 2}
 
         self.generate_dataset()
             
@@ -57,7 +58,8 @@ class DBLP(Generator):
             edges_gid = graph_ind[edges]
 
             graph_ids = np.unique(graph_ind) #list of graph identifiers
-            for id in graph_ids[:200]:
+            np.random.shuffle(graph_ids)
+            for id in graph_ids[:1000]:
 
                 #masks for filtering accordingly to the graph identifier
                 node_mask = (graph_ind == id) #mask for nodes
