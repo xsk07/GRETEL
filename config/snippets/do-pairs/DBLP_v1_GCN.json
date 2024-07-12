@@ -11,13 +11,13 @@
     "oracle": {
         "class": "src.oracle.nn.torch.OracleTorch",
         "parameters": {
-            "epochs": 100,
-            "batch_size": 64,
+            "epochs": 250,
+            "batch_size": 128,
             "optimizer": {
                 "class": "torch.optim.AdamW",
                 "parameters": {
-                    "lr":1e-2,
-                    "weight_decay": 1e-2
+                    "lr":0.014604381654059325,
+                    "weight_decay": 0
                 }
             },
             "loss_fn": {
@@ -29,10 +29,10 @@
             "model": {
                 "class": "src.oracle.nn.gcn.DownstreamGCN",
                 "parameters": {
-                    "num_conv_layers":4,
-                    "num_dense_layers":2,
-                    "conv_booster": 3,
-                    "linear_decay":2
+                    "num_conv_layers":1,
+                    "num_dense_layers":1,
+                    "conv_booster": 5,
+                    "linear_decay":2.70508093079684315
                 }
             }
         }
