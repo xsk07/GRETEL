@@ -11,21 +11,12 @@
     "oracle": {
         "class": "src.oracle.nn.torch.OracleTorch",
         "parameters": {
-<<<<<<< HEAD
             "epochs": 200,
-=======
-            "epochs": 250,
->>>>>>> 249a86056e635c13a81e82b0068cb062fe817a0d
             "batch_size": 64,
             "optimizer": {
                 "class": "torch.optim.AdamW",
                 "parameters": {
-<<<<<<< HEAD
                     "lr":0.017
-=======
-                    "lr":0.014604381654059325,
-                    "weight_decay": 0
->>>>>>> 249a86056e635c13a81e82b0068cb062fe817a0d
                 }
             },
             "loss_fn": {
@@ -37,17 +28,10 @@
             "model": {
                 "class": "src.oracle.nn.gcn.DownstreamGCN",
                 "parameters": {
-<<<<<<< HEAD
                     "num_conv_layers":3,
                     "num_dense_layers":3,
                     "conv_booster":5,
                     "linear_decay":2.25
-=======
-                    "num_conv_layers":1,
-                    "num_dense_layers":1,
-                    "conv_booster": 5,
-                    "linear_decay":2.70508093079684315
->>>>>>> 249a86056e635c13a81e82b0068cb062fe817a0d
                 }
             }
         }
