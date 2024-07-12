@@ -59,7 +59,7 @@ class DBLP(Generator):
 
             graph_ids = np.unique(graph_ind) #list of graph identifiers
             np.random.shuffle(graph_ids)
-            for id in graph_ids[:1000]:
+            for id in graph_ids: #[:1000]:
 
                 #masks for filtering accordingly to the graph identifier
                 node_mask = (graph_ind == id) #mask for nodes

@@ -28,14 +28,14 @@ class HpTuner():
         #Suggest values of the hyperparameters using a trial object.
         #batch_size = trial.trial.suggest_categorical('batch_size', [32, 64])
         learning_rate = trial.suggest_float('lr', 1e-5, 1e-1, log=True)
-        #weight_decay = trial.suggest_float('weight_decay', 1e-5, 1e-1, log=True)
+        weight_decay = trial.suggest_float('weight_decay', 1e-5, 1e-1, log=True)
         num_conv_layers = trial.suggest_int('num_conv_layers', 1, 6)
         num_dense_layers = trial.suggest_int('num_dense_layers', 1, 6)
         conv_booster = trial.suggest_int('conv_booster', 1, 6)
         linear_decay = trial.suggest_float('linear_decay', 1e-1, 3)
 
         self.oracle_config['parameters']['optimizer']['parameters']['lr'] = learning_rate
-        #self.oracle_config['parameters']['optimizer']['parameters']['weight_decay'] = weight_decay
+        self.oracle_config['parameters']['optimizer']['parameters']['weight_decay'] = weight_decay
 
         self.oracle_config['parameters']['model']['num_conv_layers'] = num_conv_layers
         self.oracle_config['parameters']['model']['num_dense_layers'] = num_dense_layers
@@ -46,4 +46,5 @@ class HpTuner():
         oracle = self.context.factories['oracles'].get_oracle(self.oracle_config, dataset)
 
         accuracy = oracle.evaluate(dataset, fold_id=-1)
+
         return accuracy
