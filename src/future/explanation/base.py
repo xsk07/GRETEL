@@ -15,10 +15,11 @@ class Explanation(Base):
         self._oracle = oracle
         self._explainer = explainer
         self._stages_info = {}
+        self._info = {}
 
         #TODO Deprecate this dictionaries
-        self._metrics_info = {}
-        self._runtime_info = {} 
+        # self._metrics_info = {}
+        # self._runtime_info = {} 
 
     @property
     def context(self) -> Context:
@@ -59,14 +60,26 @@ class Explanation(Base):
     def stages_info(self) -> dict:
         return self._stages_info
     
-    # TODO Deprecate this properties
-    @property
-    def runtime_info(self) -> dict:
-        return self._runtime_info
+    @stages_info.setter
+    def stages_info(self, new_stages_info) -> None:
+        self._stages_info = new_stages_info
     
-    @runtime_info.setter
-    def runtime_info(self, new_runtime_info) -> None:
-        self._runtime_info = new_runtime_info
+    @property
+    def info(self) -> dict:
+        return self._info
+    
+    @info.setter
+    def info(self, new_info) -> None:
+        self._info = new_info
+    
+    # TODO Deprecate this properties
+    # @property
+    # def runtime_info(self) -> dict:
+    #     return self._runtime_info
+    
+    # @runtime_info.setter
+    # def runtime_info(self, new_runtime_info) -> None:
+    #     self._runtime_info = new_runtime_info
 
     
     @property
