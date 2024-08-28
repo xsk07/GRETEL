@@ -13,7 +13,6 @@ if __name__ == "__main__":
 
     context = Context.get_context(sys.argv[1])
     context.run_number = int(sys.argv[2]) if len(sys.argv) == 3 else -1
-    context.logger.handlers = []
 
     context.factories['datasets'] = DatasetFactory(context)
     context.factories['oracles'] = OracleFactory(context)
@@ -22,5 +21,6 @@ if __name__ == "__main__":
     #context.factories['metrics'] = EvaluationMetricFactory(context.conf)
     #context.factories['plotters'] = PlotterFactory(context)
 
-    hp_tuner = HpTuner(context, 100)
+    hp_tuner = HpTuner(context, 3)
     hp_tuner.optimize()
+

@@ -12,27 +12,38 @@ class HpTuner():
         self.dataset_config = do_pairs_list[0]['dataset']
         self.oracle_config = do_pairs_list[0]['oracle']
 
+        optuna.logging.set_verbosity(optuna.logging.INFO)
+        optuna.logging.disable_default_handler()
+        self.logger = self.context.logger
+
 
     def optimize(self):
+        
+        self.logger.info("Start optimization.")
+
+        
         #Create a study object and optimize the objective function
         study = optuna.create_study(direction='maximize')
-        study.optimize(self.objective, n_trials=self.n_trials)
         
-        # Print the best parameters found
-        print('Best parameters:', study.best_params)
-        print('Best value:', study.best_value)
+        try:
+            study.optimize(self.objective, n_trials=self.n_trials, show_progress_bar=True)
+        except KeyboardInterrupt:
+            self.logger.info("Optimization interrupted by user.")
+        #Logging of the best parameters
+        self.logger.info(f'Best parameters: {study.best_params}')
+        self.logger.info(f'Best value: {study.best_value}')
 
     #Define an objective function to be maximized.
     def objective(self, trial):
 
         #Suggest values of the hyperparameters using a trial object.
         #batch_size = trial.trial.suggest_categorical('batch_size', [32, 64])
-        learning_rate = trial.suggest_float('lr', 1e-5, 1e-1, log=True)
-        weight_decay = trial.suggest_float('weight_decay', 1e-5, 1e-1, log=True)
-        num_conv_layers = trial.suggest_int('num_conv_layers', 1, 6)
-        num_dense_layers = trial.suggest_int('num_dense_layers', 1, 6)
-        conv_booster = trial.suggest_int('conv_booster', 1, 6)
-        linear_decay = trial.suggest_float('linear_decay', 1e-1, 3)
+        learning_rate = trial.suggest_float('lr', 1e-5, 1e-1)
+        weight_decay = trial.suggest_float('weight_decay', 1e-5, 1e-1)
+        num_conv_layers =  trial.suggest_int('num_conv_layers', 2, 4)
+        num_dense_layers = trial.suggest_int('num_dense_layers', 2, 4)
+        conv_booster = trial.suggest_int('conv_booster', 4, 6)
+        linear_decay = trial.suggest_float('linear_decay', 0, 2)
 
         self.oracle_config['parameters']['optimizer']['parameters']['lr'] = learning_rate
         self.oracle_config['parameters']['optimizer']['parameters']['weight_decay'] = weight_decay
@@ -45,6 +56,7 @@ class HpTuner():
         dataset = self.context.factories['datasets'].get_dataset(self.dataset_config)
         oracle = self.context.factories['oracles'].get_oracle(self.oracle_config, dataset)
 
-        accuracy = oracle.evaluate(dataset, fold_id=-1)
-
-        return accuracy
+        mean_accuracy = oracle.mean_accuracy
+        if mean_accuracy is None:
+            raise ValueError("The oracle did not return a valid accuracy value.")
+        return mean_accuracy

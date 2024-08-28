@@ -16,7 +16,8 @@
             "optimizer": {
                 "class": "torch.optim.AdamW",
                 "parameters": {
-                    "lr":0.017
+                    "lr":0.002,
+                    "weight_decay":4e-05
                 }
             },
             "loss_fn": {
@@ -28,10 +29,10 @@
             "model": {
                 "class": "src.oracle.nn.gcn.DownstreamGCN",
                 "parameters": {
-                    "num_conv_layers":3,
+                    "num_conv_layers":4,
                     "num_dense_layers":3,
                     "conv_booster":5,
-                    "linear_decay":2.25
+                    "linear_decay":2
                 }
             }
         }

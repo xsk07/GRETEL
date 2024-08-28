@@ -33,9 +33,9 @@ class OracleTorch(TorchBase, Oracle):
             preds += list(pred.squeeze().detach().to('cpu').numpy())
          
         accuracy = self.accuracy(labels_list, preds)
-        self.context.logger.info(f'Test accuracy = {np.mean(accuracy):.4f}')
-        return np.mean(accuracy)
-
+        self.mean_accuracy = np.mean(accuracy)
+        self.context.logger.info(f'Test accuracy = {self.mean_accuracy:.4f}')
+        
 
     def _real_predict(self, data_instance):
         return torch.argmax(self._real_predict_proba(data_instance)).item()
