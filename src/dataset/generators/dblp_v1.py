@@ -1,6 +1,6 @@
-from os.path import join
 import numpy as np
 
+from os.path import join
 from src.dataset.generators.base import Generator
 from src.dataset.instances.graph import GraphInstance
 
@@ -13,29 +13,29 @@ class DBLP(Generator):
         self.dataset_name = self.local_config['parameters']['dataset_name']
 
         #Paths to the files of the DBLP_v1 dataset
-
         #sparse (block diagonal) adjacency matrix for all graphs (node_id, node_id)
         self._adj_file_path = join(base_path, f"{self.dataset_name}_A.txt")
-
         #column vector of graph identifiers for all nodes of all graphs
         self._gid_file_path = join(base_path, f"{self.dataset_name}_graph_indicator.txt")
-
         #class labels for all graphs in the dataset
         self._gl_file_path = join(base_path, f"{self.dataset_name}_graph_labels.txt")
-
         #column vector of node labels
         self._nl_file_path = join(base_path, f"{self.dataset_name}_node_labels.txt")
-
         #labels for the edges in DS_A_sparse.txt
         self._el_file_path = join(base_path, f"{self.dataset_name}_edge_labels.txt")
 
         self.dataset.node_features_map = {'node_feature': 0}
         self.dataset.edge_features_map = {'P2P':0, 'P2W': 1, 'W2W': 2}
-
         self.generate_dataset()
+
+    def check_configuration(self):
+        super().check_configuration()
+        local_config = self.local_config
+        if 'dataset_name' not in local_config['parameters']:
+            raise Exception("The name of the dataset must be given.")
             
     def generate_dataset(self):
-        
+
         if not self.get_num_instances():
 
             #Loading the dataset
@@ -58,6 +58,7 @@ class DBLP(Generator):
             min_val = np.min(node_labels)
             max_val = np.max(node_labels)
             node_labels = (node_labels-min_val)/(max_val-min_val)
+            assert (node_labels >= 0) & (node_labels <= 1)
 
             graph_ids = np.unique(graph_ind) #list of graph identifiers
             #np.random.shuffle(graph_ids)#shuffle randomly the graph ids
@@ -94,6 +95,7 @@ class DBLP(Generator):
                             id,
                             label=labels[id-1],
                             data=adj_matrix,
+                            dataset=self.dataset,
                             node_features=node_features,
                             edge_features=edge_features
                         )
@@ -110,5 +112,6 @@ class DBLP(Generator):
         
         #adj_matrix[edges[:,1], edges[:,0]] = 1
         return adj_matrix
-    
+        
+
     
