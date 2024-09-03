@@ -39,19 +39,11 @@ class DBLP(Generator):
 
             #Loading the dataset
             labels = np.loadtxt(self._gl_file_path, dtype=int)
-            #labels = labels.reshape((-1, 1))
-            print("labels: ", labels.shape)
             node_labels = np.loadtxt(self._nl_file_path, dtype=int)
             node_labels = node_labels.reshape((-1, 1))
-            print("node_labels: ", node_labels.shape)
             edges = np.genfromtxt(self._adj_file_path, dtype=int, delimiter=',')
-            print("edges: ", edges.shape)
             edge_labels = np.loadtxt(self._el_file_path, dtype=int)
-            #edge_labels = edge_labels.reshape((-1, 1))
-            print("edge_labels: ", edge_labels.shape)
             graph_ind = np.loadtxt(self._gid_file_path, dtype=int)
-            #graph_ind = graph_ind.reshape((-1, 1))
-            print("graph_ind: ", graph_ind.shape)
 
             assert np.all(np.diff(graph_ind)>=0) #the array of graph indicators is monotone increasing
             #it means that we can subtract the min node of each graph to its nodes,
