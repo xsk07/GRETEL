@@ -4,7 +4,6 @@ from os.path import join
 from src.dataset.generators.base import Generator
 from src.dataset.instances.graph import GraphInstance
 
-
 class DBLP(Generator):
 
     def init(self):
@@ -40,10 +39,19 @@ class DBLP(Generator):
 
             #Loading the dataset
             labels = np.loadtxt(self._gl_file_path, dtype=int)
+            #labels = labels.reshape((-1, 1))
+            print("labels: ", labels.shape)
             node_labels = np.loadtxt(self._nl_file_path, dtype=int)
+            node_labels = node_labels.reshape((-1, 1))
+            print("node_labels: ", node_labels.shape)
             edges = np.genfromtxt(self._adj_file_path, dtype=int, delimiter=',')
+            print("edges: ", edges.shape)
             edge_labels = np.loadtxt(self._el_file_path, dtype=int)
+            #edge_labels = edge_labels.reshape((-1, 1))
+            print("edge_labels: ", edge_labels.shape)
             graph_ind = np.loadtxt(self._gid_file_path, dtype=int)
+            #graph_ind = graph_ind.reshape((-1, 1))
+            print("graph_ind: ", graph_ind.shape)
 
             assert np.all(np.diff(graph_ind)>=0) #the array of graph indicators is monotone increasing
             #it means that we can subtract the min node of each graph to its nodes,
@@ -58,7 +66,8 @@ class DBLP(Generator):
             min_val = np.min(node_labels)
             max_val = np.max(node_labels)
             node_labels = (node_labels-min_val)/(max_val-min_val)
-            assert (node_labels >= 0) & (node_labels <= 1)
+
+            assert np.all((node_labels >= 0) & (node_labels <= 1)) #values of node labels are in [0,1]
 
             graph_ids = np.unique(graph_ind) #list of graph identifiers
             #np.random.shuffle(graph_ids)#shuffle randomly the graph ids
@@ -67,12 +76,11 @@ class DBLP(Generator):
                 #masks for filtering accordingly to the graph identifier
                 node_mask = (graph_ind == id) #mask for nodes
                 edge_mask = (edges_gid == id) #mask for edges
-                #print("shape " + node_mask.shape)
 
                 filtered_edges = edges[np.any(edge_mask, axis=1)] #select edges of the graph with identifier id
                 assert np.all(np.diff(np.unique(filtered_edges))==1)
-                min_node = filtered_edges.min() #number identifier of the minimum node in the subgraph
 
+                min_node = filtered_edges.min() #number identifier of the minimum node in the subgraph
                 #subtract the minimum node to the edges, so that nodes are numbered from 0 to k,
                 #k is the maximum node of the mapping
                 #This step allows us to reduce the size of the adjacency matrix
@@ -82,11 +90,10 @@ class DBLP(Generator):
 
                 adj_matrix = self.create_adj_matrix(mapped_edges)
 
+                #if the matrix is singular then ignore the instance
                 if not np.isclose(np.linalg.det(adj_matrix), 0):
 
                     node_features = node_labels[node_mask]
-                    node_features = node_features[:, np.newaxis]
-
                     # one-hot encoding of the edge lables
                     edge_features = np.eye(3)[edge_labels[np.any(edge_mask, axis=1)]]
                     
@@ -109,9 +116,5 @@ class DBLP(Generator):
         # so already it contains the edges of the two possible permutations of nodes,
         # and so there is no need to insert a 1 in the transposed positions
         adj_matrix[edges[:,0], edges[:,1]] = 1
-        
         #adj_matrix[edges[:,1], edges[:,0]] = 1
         return adj_matrix
-        
-
-    

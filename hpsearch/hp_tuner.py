@@ -40,9 +40,9 @@ class HpTuner():
         #batch_size = trial.trial.suggest_categorical('batch_size', [32, 64])
         learning_rate = trial.suggest_float('lr', 1e-5, 1e-1)
         weight_decay = trial.suggest_float('weight_decay', 1e-5, 1e-1)
-        num_conv_layers =  trial.suggest_int('num_conv_layers', 2, 4)
-        num_dense_layers = trial.suggest_int('num_dense_layers', 2, 4)
-        conv_booster = trial.suggest_int('conv_booster', 4, 6)
+        num_conv_layers =  trial.suggest_int('num_conv_layers', 1, 10)
+        num_dense_layers = trial.suggest_int('num_dense_layers', 1, 10)
+        conv_booster = trial.suggest_int('conv_booster', 1, 10)
         linear_decay = trial.suggest_float('linear_decay', 0, 2)
 
         self.oracle_config['parameters']['optimizer']['parameters']['lr'] = learning_rate
