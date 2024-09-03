@@ -24,7 +24,7 @@ class HpTuner():
         
         #Create a study object and optimize the objective function
         study = optuna.create_study(direction='maximize')
-        
+
         try:
             study.optimize(self.objective, n_trials=self.n_trials, show_progress_bar=True)
         except KeyboardInterrupt:
@@ -38,11 +38,11 @@ class HpTuner():
 
         #Suggest values of the hyperparameters using a trial object.
         #batch_size = trial.trial.suggest_categorical('batch_size', [32, 64])
-        learning_rate = trial.suggest_float('lr', 1e-5, 1e-1)
-        weight_decay = trial.suggest_float('weight_decay', 1e-5, 1e-1)
-        num_conv_layers =  trial.suggest_int('num_conv_layers', 1, 10)
-        num_dense_layers = trial.suggest_int('num_dense_layers', 1, 10)
-        conv_booster = trial.suggest_int('conv_booster', 1, 10)
+        learning_rate = trial.suggest_float('lr', 1e-03, 1e-01)
+        weight_decay = trial.suggest_float('weight_decay', 1e-05, 1e-01)
+        num_conv_layers =  trial.suggest_int('num_conv_layers', 1, 5)
+        num_dense_layers = trial.suggest_int('num_dense_layers', 1, 5)
+        conv_booster = trial.suggest_int('conv_booster', 1, 5)
         linear_decay = trial.suggest_float('linear_decay', 0, 2)
 
         self.oracle_config['parameters']['optimizer']['parameters']['lr'] = learning_rate

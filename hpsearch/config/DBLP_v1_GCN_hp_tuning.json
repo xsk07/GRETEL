@@ -11,13 +11,13 @@
     "oracle": {
         "class": "hpsearch.oracle.torch.OracleTorch",
         "parameters": {
-            "epochs": 500,
+            "epochs": 200,
             "batch_size": 64,
             "optimizer": {
                 "class": "torch.optim.AdamW",
                 "parameters": {
-                    "lr":0.005597827355896938,
-                    "weight_decay":0.022451620056299467
+                    "lr":0.006,
+                    "weight_decay":0.004
                 }
             },
             "loss_fn": {
@@ -29,10 +29,10 @@
             "model": {
                 "class": "src.oracle.nn.gcn.DownstreamGCN",
                 "parameters": {
-                    "num_conv_layers":5,
+                    "num_conv_layers":6,
                     "num_dense_layers":9,
-                    "conv_booster":2,
-                    "linear_decay":0.3211868888719398
+                    "conv_booster":5,
+                    "linear_decay":0.4
                 }
             }
         }
