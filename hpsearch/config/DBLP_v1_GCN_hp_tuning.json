@@ -1,6 +1,6 @@
 {
     "dataset": {
-        "class": "src.dataset.dataset_base.Dataset",
+        "class":  "src.dataset.dataset_base.Dataset",
         "parameters": {
             "generator": {
                 "class": "src.dataset.generators.dblp_v1.DBLP",
@@ -8,7 +8,7 @@
             }
         }
     },
-    "oracle": {
+    "oracle":{
         "class": "hpsearch.oracle.torch.OracleTorch",
         "parameters": {
             "epochs": 200,
@@ -29,9 +29,9 @@
             "model": {
                 "class": "src.oracle.nn.gcn.DownstreamGCN",
                 "parameters": {
-                    "num_conv_layers":6,
+                    "num_conv_layers":9,
                     "num_dense_layers":9,
-                    "conv_booster":5,
+                    "conv_booster":9,
                     "linear_decay":0.4
                 }
             }

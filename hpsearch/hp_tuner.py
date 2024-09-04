@@ -16,7 +16,6 @@ class HpTuner():
         optuna.logging.disable_default_handler()
         self.logger = self.context.logger
 
-
     def optimize(self):
         
         self.logger.info("Start optimization.")
@@ -38,22 +37,23 @@ class HpTuner():
 
         #Suggest values of the hyperparameters using a trial object.
         #batch_size = trial.trial.suggest_categorical('batch_size', [32, 64])
-        learning_rate = trial.suggest_float('lr', 1e-03, 1e-01)
-        weight_decay = trial.suggest_float('weight_decay', 1e-05, 1e-01)
-        num_conv_layers =  trial.suggest_int('num_conv_layers', 1, 5)
-        num_dense_layers = trial.suggest_int('num_dense_layers', 1, 5)
-        conv_booster = trial.suggest_int('conv_booster', 1, 5)
+        learning_rate = trial.suggest_float('lr', 1e-3, 1e-1)
+        weight_decay = trial.suggest_float('weight_decay', 1e-5, 1e-1)
+        num_conv_layers =  trial.suggest_int('num_conv_layers', 1, 2)
+        num_dense_layers = trial.suggest_int('num_dense_layers', 1, 2)
+        conv_booster = trial.suggest_int('conv_booster', 1, 2)
         linear_decay = trial.suggest_float('linear_decay', 0, 2)
 
         self.oracle_config['parameters']['optimizer']['parameters']['lr'] = learning_rate
         self.oracle_config['parameters']['optimizer']['parameters']['weight_decay'] = weight_decay
-
-        self.oracle_config['parameters']['model']['num_conv_layers'] = num_conv_layers
-        self.oracle_config['parameters']['model']['num_dense_layers'] = num_dense_layers
-        self.oracle_config['parameters']['model']['conv_booster'] = conv_booster
-        self.oracle_config['parameters']['model']['linear_decay'] = linear_decay
+        self.oracle_config['parameters']['model']['parameters']['num_conv_layers'] = num_conv_layers
+        self.oracle_config['parameters']['model']['parameters']['num_dense_layers'] = num_dense_layers
+        self.oracle_config['parameters']['model']['parameters']['conv_booster'] = conv_booster
+        self.oracle_config['parameters']['model']['parameters']['linear_decay'] = linear_decay
 
         dataset = self.context.factories['datasets'].get_dataset(self.dataset_config)
+        parameters = self.oracle_config['parameters']
+        self.logger.info(f'Parameters: {parameters}')
         oracle = self.context.factories['oracles'].get_oracle(self.oracle_config, dataset)
 
         mean_accuracy = oracle.mean_accuracy
