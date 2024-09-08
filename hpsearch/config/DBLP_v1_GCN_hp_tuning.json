@@ -16,23 +16,24 @@
             "optimizer": {
                 "class": "torch.optim.AdamW",
                 "parameters": {
-                    "lr":0.006,
-                    "weight_decay":0.004
+                    "lr":0.004,
+                    "weight_decay":0
                 }
             },
             "loss_fn": {
                 "class": "torch.nn.CrossEntropyLoss",
-                "parameters": {
+                "parameters": { 
+                    
                     "reduction":"mean"
                 }
             },
             "model": {
                 "class": "src.oracle.nn.gcn.DownstreamGCN",
                 "parameters": {
-                    "num_conv_layers":9,
-                    "num_dense_layers":9,
-                    "conv_booster":9,
-                    "linear_decay":0.4
+                    "num_conv_layers":4,
+                    "num_dense_layers":2,
+                    "conv_booster":5,
+                    "linear_decay":1
                 }
             }
         }

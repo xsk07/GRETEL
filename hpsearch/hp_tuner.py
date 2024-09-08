@@ -55,12 +55,12 @@ class HpTuner():
         #conv_booster = trial.suggest_int('conv_booster', 1, 5)
         linear_decay = trial.suggest_float('linear_decay', 0, 2)
 
-        self.oracle_config['parameters']['optimizer']['parameters']['lr'] = learning_rate
-        self.oracle_config['parameters']['optimizer']['parameters']['weight_decay'] = weight_decay
+        self.oracle_config['parameters']['optimizer']['parameters']['lr'] = learning_rate #0.0021
+        self.oracle_config['parameters']['optimizer']['parameters']['weight_decay'] = weight_decay #0.000142
         self.oracle_config['parameters']['model']['parameters']['num_conv_layers'] = 4 #num_conv_layers
         self.oracle_config['parameters']['model']['parameters']['num_dense_layers'] = 2 #num_dense_layers
         self.oracle_config['parameters']['model']['parameters']['conv_booster'] = 5 #conv_booster
-        self.oracle_config['parameters']['model']['parameters']['linear_decay'] = linear_decay
+        self.oracle_config['parameters']['model']['parameters']['linear_decay'] = linear_decay #0.00194
 
         dataset = self.context.factories['datasets'].get_dataset(self.dataset_config)
         parameters = self.oracle_config['parameters']
