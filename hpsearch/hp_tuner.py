@@ -48,18 +48,18 @@ class HpTuner():
 
         #Suggest values of the hyperparameters using a trial object.
         #batch_size = trial.trial.suggest_categorical('batch_size', [32, 64])
-        learning_rate = trial.suggest_float('lr', 1e-5, 1, log=True)
-        weight_decay = trial.suggest_float('weight_decay', 1e-5, 1, log=True)
-        #num_conv_layers =  trial.suggest_int('num_conv_layers', 1, 5)
-        #num_dense_layers = trial.suggest_int('num_dense_layers', 1, 5)
-        #conv_booster = trial.suggest_int('conv_booster', 1, 5)
-        linear_decay = trial.suggest_float('linear_decay', 0, 2)
+        learning_rate = trial.suggest_float('lr', 0.001, 0.01)
+        weight_decay = trial.suggest_float('weight_decay', 1e-5, 0.01)
+        num_conv_layers =  trial.suggest_int('num_conv_layers', 1, 5)
+        num_dense_layers = trial.suggest_int('num_dense_layers', 1, 5)
+        conv_booster = trial.suggest_int('conv_booster', 1, 5)
+        linear_decay = trial.suggest_float('linear_decay', 0.01, 2)
 
         self.oracle_config['parameters']['optimizer']['parameters']['lr'] = learning_rate #0.0021
         self.oracle_config['parameters']['optimizer']['parameters']['weight_decay'] = weight_decay #0.000142
-        self.oracle_config['parameters']['model']['parameters']['num_conv_layers'] = 4 #num_conv_layers
-        self.oracle_config['parameters']['model']['parameters']['num_dense_layers'] = 2 #num_dense_layers
-        self.oracle_config['parameters']['model']['parameters']['conv_booster'] = 5 #conv_booster
+        self.oracle_config['parameters']['model']['parameters']['num_conv_layers'] = num_conv_layers #4
+        self.oracle_config['parameters']['model']['parameters']['num_dense_layers'] = num_dense_layers #2
+        self.oracle_config['parameters']['model']['parameters']['conv_booster'] = conv_booster #5 
         self.oracle_config['parameters']['model']['parameters']['linear_decay'] = linear_decay #0.00194
 
         dataset = self.context.factories['datasets'].get_dataset(self.dataset_config)
