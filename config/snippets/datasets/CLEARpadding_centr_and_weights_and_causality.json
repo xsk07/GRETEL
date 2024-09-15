@@ -1,8 +1,0 @@
-{
-    "manipulators": [
-    { "class": "src.dataset.manipulators.CLEAR_manipulator.CLEARPadding", "parameters": {} },
-    { "class": "src.dataset.manipulators.causality.Causality", "parameters": {} },
-    { "class": "src.dataset.manipulators.centralities.NodeCentrality", "parameters": {} },
-    { "class": "src.dataset.manipulators.weights.EdgeWeights", "parameters": {} }       
-    ]    
-}

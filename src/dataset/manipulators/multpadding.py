@@ -1,4 +1,3 @@
-import networkx as nx
 import numpy as np
 from src.dataset.manipulators.base import BaseManipulator
 
@@ -6,8 +5,8 @@ class PaddingGCounteRGAN(BaseManipulator):
     
     
     def node_info(self, instance):
-        adj = instance.data
-        n_nodes=adj.shape[0]
+        
+        n_nodes=instance.num_nodes
         mult=4
         
         if (n_nodes==0):
@@ -19,4 +18,3 @@ class PaddingGCounteRGAN(BaseManipulator):
         instance.node_features=np.pad(instance.node_features,((0,num_padding),(0,0)),'constant',constant_values=0)
        
         return {}
-        

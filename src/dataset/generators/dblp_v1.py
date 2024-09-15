@@ -149,4 +149,4 @@ class DBLP(Generator):
         node_features['value'] = self.normalize(node_features['value'])
         assert np.all(node_features['value'].between(0,1)) #values are in [0,1]
 
-        return node_features[['type', 'value']].values
+        return node_features[['type', 'value']].to_numpy()

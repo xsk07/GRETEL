@@ -1,6 +1,6 @@
 {
     "dataset": {
-        "class": "src.dataset.dataset_base.Dataset",
+        "class":  "src.dataset.dataset_base.Dataset",
         "parameters": {
             "generator": {
                 "class": "src.dataset.generators.dblp_v1.DBLP",
@@ -8,7 +8,7 @@
             }
         }
     },
-    "oracle": {
+    "oracle":{
         "class": "src.oracle.nn.torch.OracleTorch",
         "parameters": {
             "epochs": 200,
@@ -22,7 +22,7 @@
             },
             "loss_fn": {
                 "class": "torch.nn.CrossEntropyLoss",
-                "parameters": {
+                "parameters": { 
                     "reduction":"mean"
                 }
             },

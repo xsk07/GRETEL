@@ -1,5 +1,3 @@
-
-
 import numpy as np
 
 from src.dataset.manipulators.base import BaseManipulator
