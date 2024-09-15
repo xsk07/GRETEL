@@ -12,8 +12,8 @@
       },
     "do-pairs":[{"compose_dblp_v1_gcn" : "config/snippets/do-pairs/DBLP_v1_GCN.json"}],
     "explainers": [{"class": "src.explainer.generative.cf2.CF2Explainer","parameters":{ 
-        "epochs": 10,
-        "lr" : 0.02, 
+        "epochs": 3,
+        "lr" : 0.01, 
         "alpha": 0.2}}],
     "compose_mes" : "config/snippets/default_metrics.json",
     "compose_strs" : "config/snippets/default_store_paths.json"
